@@ -134,8 +134,8 @@ mc_search__cond_struct_new_init_hex (const char *charset, mc_search_t * lc_mc_se
                                      mc_search_cond_t * mc_search_cond)
 {
     GString *tmp;
-    mc_search_hex_parse_error_t error;
-    int error_pos;
+    mc_search_hex_parse_error_t error = MC_SEARCH_HEX_E_OK;
+    int error_pos = 0;
 
     tmp = mc_search__hex_translate_to_regex (mc_search_cond->str, &error, &error_pos);
     if (tmp != NULL)
