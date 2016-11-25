@@ -457,10 +457,27 @@ static const char *
 string_file_name (file_entry_t * fe, int len)
 {
     static char buffer[MC_MAXPATHLEN * MB_LEN_MAX + 1];
+    const char * ext = NULL;
+    size_t uflen;
 
-    (void) len;
+    ext = extension (fe->fname);
+    uflen = g_utf8_strlen (fe->fname, -1);
+    if (ext && *ext && ext != fe->fname + 1 && (size_t) len > uflen)
+    {
+        size_t elen = strlen (ext);
+        size_t flen = strlen (fe->fname);
+        size_t padlen = len - uflen + 1;
+        size_t clen = flen - elen - 1;
 
-    g_strlcpy (buffer, fe->fname, sizeof (buffer));
+        memcpy (buffer, fe->fname, clen);
+        memset (&buffer[clen], ' ', padlen);
+        memcpy (&buffer[clen + padlen], ext, elen);
+        buffer[clen + padlen + elen] = 0;
+    }
+    else
+    {
+        g_strlcpy (buffer, fe->fname, sizeof (buffer));
+    }
     return buffer;
 }
 

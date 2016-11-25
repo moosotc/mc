@@ -392,6 +392,14 @@ sort_ext (file_entry_t * a, file_entry_t * b)
     {
         int r;
 
+        if (a->fname[0] == '.' || b->fname[0] == '.')
+        {
+            if (a->fname[0] == '.' && b->fname[0] == '.')
+                return sort_name (a, b);
+            else
+                return sort_name (a, b) * -reverse;
+        }
+
         if (a->second_sort_key == NULL)
             a->second_sort_key = str_create_key (extension (a->fname), case_sensitive);
         if (b->second_sort_key == NULL)
